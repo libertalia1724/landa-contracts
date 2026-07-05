@@ -24,7 +24,8 @@ contract Market is ReentrancyGuard, Operator {
     uint256 public poolRecoveryPeriod;
     uint256 public lastBlockNumber;
 
-    function initialize(address initUsdlAddress, address initLandaAddress, address initOracle, address initTreasury, uint256 initMinSpread, uint256 initBasePool, uint256 initPoolRecoveryPeriod) external checkInitialize onlyOwner {
+    function initialize(address initUsdlAddress, address initLandaAddress, address initOracle, address initTreasury, uint256 initMinSpread, uint256 initBasePool, uint256 initPoolRecoveryPeriod) external onlyOwner {
+        require(!initialized, "already initialized");
         usdl = initUsdlAddress;
         landa = initLandaAddress;
         oracle = initOracle;
