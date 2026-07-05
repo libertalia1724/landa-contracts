@@ -24,7 +24,7 @@ contract Market is ReentrancyGuard, Operator {
     uint256 public poolRecoveryPeriod;
     uint256 public lastBlockNumber;
 
-    function initialize(address initUsdlAddress, address initLandaAddress, address initOracle, address initTreasury, uint256 initMinSpread, uint256 initBasePool, uint256 initPoolRecoveryPeriod) external onlyOwner {
+    function initialize(address initUsdlAddress, address initLandaAddress, address initOracle, address initTreasury, uint256 initMinSpread, uint256 initBasePool, uint256 initPoolRecoveryPeriod) external checkInitialize onlyOwner {
         usdl = initUsdlAddress;
         landa = initLandaAddress;
         oracle = initOracle;
@@ -74,7 +74,7 @@ contract Market is ReentrancyGuard, Operator {
         uint256 swapFee = (returnLandaAmount * spread) / 10_000;
         uint256 landaMintAmount = returnLandaAmount - swapFee;
 
-        applySwapToPoolForLanda(returnLandaAmount);
+        applySwapToPoolForLanda(usdlAmount);
 
         ILandaAsset(usdl).burnFrom(msg.sender, usdlAmount);
         ILandaAsset(landa).mint(msg.sender, landaMintAmount);
